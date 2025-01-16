@@ -98,3 +98,53 @@ xlabel('Target Sebenarnya');
 ylabel('Prediksi');
 title('Scatter Plot Target vs Prediksi pada Data Uji');
 grid on;
+
+% 1. Grafik Performa Pembelajaran (MSE)
+figure;
+plot(tr.perf, 'LineWidth', 2); % Plot MSE selama pelatihan
+xlabel('Epoch');
+ylabel('Mean Squared Error (MSE)');
+title('Grafik Performa Pembelajaran (MSE)');
+grid on;
+
+% Tampilkan MSE terakhir
+final_mse = tr.perf(end);
+fprintf('MSE terakhir pada epoch %d: %.6f\n', length(tr.perf), final_mse);
+
+% 2. Hitung Tingkat Keakuratan pada Data Uji
+% Hitung error absolut rata-rata
+absolute_error = abs(test_targets - predictions);
+mean_absolute_error = mean(absolute_error);
+
+% Hitung tingkat keakuratan (1 - error relatif rata-rata)
+accuracy = 100 * (1 - mean_absolute_error / mean(test_targets));
+fprintf('Tingkat keakuratan hasil prediksi: %.2f%%\n', accuracy);
+
+% 3. Bobot Jaringan Terbaik
+% Bobot antara input layer ke hidden layer
+weights_input_to_hidden = net.IW{1}; % Input ke hidden layer
+bias_hidden = net.b{1}; % Bias untuk hidden layer
+
+% Bobot antara hidden layer ke output layer
+weights_hidden_to_output = net.LW{2, 1}; % Hidden layer ke output layer
+bias_output = net.b{2}; % Bias untuk output layer
+
+% Tampilkan bobot dan bias
+fprintf('\nBobot Input ke Hidden Layer:\n');
+disp(weights_input_to_hidden);
+fprintf('Bias Hidden Layer:\n');
+disp(bias_hidden);
+
+fprintf('Bobot Hidden ke Output Layer:\n');
+disp(weights_hidden_to_output);
+fprintf('Bias Output Layer:\n');
+disp(bias_output);
+
+% Tambahan (Visualisasi Prediksi)
+figure;
+scatter(test_targets, predictions, 'filled');
+xlabel('Target Sebenarnya');
+ylabel('Prediksi');
+title('Scatter Plot Target vs Prediksi pada Data Uji');
+grid on;
+
